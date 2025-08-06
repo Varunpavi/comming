@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Friendship Journey</title>
+    <title>Special Birthday Surprise</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #fff5f5 0%, #ffd6e7 100%);
             margin: 0;
             padding: 0;
             min-height: 100vh;
@@ -15,6 +15,7 @@
             justify-content: center;
             align-items: center;
             color: #333;
+            text-align: center;
         }
 
         .container {
@@ -24,30 +25,59 @@
             width: 90%;
             max-width: 800px;
             padding: 30px;
-            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        h1 {
-            color: #4a6fa5;
-            margin-bottom: 30px;
-        }
-
-        .login-section, .book-section {
-            transition: all 0.5s ease;
-        }
-
-        .login-section {
-            padding: 20px;
-        }
-
-        .book-section {
+        .section {
             display: none;
-            padding: 20px;
+            animation: fadeIn 1s ease;
         }
 
-        input[type="password"] {
+        .section.active {
+            display: block;
+        }
+
+        h1 {
+            color: #ff6b8b;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #4a6fa5;
+        }
+
+        .countdown {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #ff6b8b;
+        }
+
+        .birthday-date {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .special-message {
+            background-color: #fff9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid #ff6b8b;
+        }
+
+        .poem {
+            font-style: italic;
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+
+        .game-section {
+            margin: 30px 0;
+        }
+
+        input[type="text"] {
             width: 70%;
             padding: 12px 20px;
             margin: 15px 0;
@@ -58,12 +88,12 @@
             transition: all 0.3s;
         }
 
-        input[type="password"]:focus {
-            border-color: #4a6fa5;
+        input[type="text"]:focus {
+            border-color: #ff6b8b;
         }
 
         button {
-            background-color: #4a6fa5;
+            background-color: #ff6b8b;
             color: white;
             border: none;
             padding: 12px 30px;
@@ -75,13 +105,25 @@
         }
 
         button:hover {
-            background-color: #3a5a80;
+            background-color: #ff4d7a;
             transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            height: 20px;
+            margin: 10px 0;
+        }
+
+        .success-message {
+            color: #2ecc71;
+            font-size: 1.2em;
+            margin: 20px 0;
         }
 
         .chapter {
             display: none;
-            animation: fadeIn 0.5s ease;
+            text-align: left;
         }
 
         .chapter.active {
@@ -89,7 +131,6 @@
         }
 
         .chapter-content {
-            text-align: left;
             line-height: 1.6;
             margin-bottom: 30px;
         }
@@ -115,10 +156,12 @@
             margin-top: 20px;
         }
 
-        .error-message {
-            color: #e74c3c;
-            height: 20px;
-            margin-top: 10px;
+        .memory-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #ff6b8b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
         }
 
         @keyframes fadeIn {
@@ -126,173 +169,294 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .decoration {
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        .typing-text {
+            overflow: hidden;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end);
+            display: inline-block;
+        }
+
+        .confetti {
             position: absolute;
-            opacity: 0.1;
-            z-index: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            border-radius: 50%;
+            animation: confettiFall 5s linear forwards;
         }
 
-        .decoration.top-left {
-            top: 20px;
-            left: 20px;
-            font-size: 50px;
-            transform: rotate(-15deg);
-        }
-
-        .decoration.bottom-right {
-            bottom: 20px;
-            right: 20px;
-            font-size: 50px;
-            transform: rotate(15deg);
-        }
-
-        .memory-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid #4a6fa5;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="decoration top-left">📖</div>
-        <div class="decoration bottom-right">✨</div>
-
-        <!-- Login Section -->
-        <div class="login-section" id="loginSection">
-            <h1>Our Friendship Journey</h1>
-            <p>Enter the secret password to unlock our story</p>
-            <input type="password" id="passwordInput" placeholder="Our special word...">
-            <div class="error-message" id="errorMessage"></div>
-            <button onclick="checkPassword()">Unlock Memories</button>
+        <!-- Birthday Countdown Section -->
+        <div class="section active" id="countdownSection">
+            <h1>Counting Down to Your Special Day!</h1>
+            <div class="countdown" id="countdown"></div>
+            <div class="birthday-date" id="birthdayDate"></div>
+            <button onclick="nextSection()">It's My Birthday!</button>
         </div>
 
-        <!-- Book Section -->
-        <div class="book-section" id="bookSection">
-            <h1>Our Friendship Journey</h1>
+        <!-- Birthday Message Section -->
+        <div class="section" id="messageSection">
+            <h1><span class="typing-text">Happy Birthday My Special Friend!</span></h1>
+            <div class="special-message">
+                <p>Dear <span id="friendName">Priya</span>,</p>
+                <div class="poem">
+                    <p>Roses are red, violets are blue,</p>
+                    <p>On your birthday, I'm grateful for you.</p>
+                    <p>Your smile brightens my darkest day,</p>
+                    <p>In my heart, you'll always stay.</p>
+                    <p>Through laughter and tears, thick and thin,</p>
+                    <p>A friend like you is rare to win.</p>
+                </div>
+                <p>Wishing you the most amazing birthday filled with joy and love!</p>
+            </div>
+            <button onclick="nextSection()">Let's Play a Game!</button>
+        </div>
+
+        <!-- Nickname Game Section -->
+        <div class="section" id="gameSection">
+            <h1>Guess Your Special Nickname</h1>
+            <div class="game-section">
+                <p>I have a special nickname for you. Can you guess what it is?</p>
+                <p><em>Hint: It's something cute I call you when you're being silly</em></p>
+                <input type="text" id="nicknameInput" placeholder="Type your guess here...">
+                <div class="error-message" id="gameErrorMessage"></div>
+                <button onclick="checkNickname()">Submit Guess</button>
+                <div class="success-message" id="successMessage" style="display:none;">
+                    That's right! I love calling you <strong>Dubuku</strong>! ❤️
+                </div>
+            </div>
+            <div id="afterGame" style="display:none;">
+                <button onclick="nextSection()">Continue to Our Memories</button>
+            </div>
+        </div>
+
+        <!-- Memory Book Section -->
+        <div class="section" id="bookSection">
+            <h1>Our Beautiful Friendship Journey</h1>
             
             <!-- Chapter 1 -->
             <div class="chapter active" id="chapter1">
-                <h2>Chapter 1: The First Meeting</h2>
-                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends meeting">
+                <h2>Chapter 1: The First Spark</h2>
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="First meeting">
                 <div class="chapter-content">
-                    <p>It all began on <strong>[Date/Year]</strong> when we first met at <strong>[Location]</strong>. I remember thinking <strong>[Your first impression]</strong> when I saw you.</p>
+                    <p>Our story began on <strong>March 15, 2018</strong> at <strong>college cafeteria</strong>. I remember thinking <strong>how warm and friendly you were</strong> when we first met.</p>
                     
                     <div class="memory-box">
-                        <p><em>"That time when we [specific memory from first meeting]"</em></p>
+                        <p><em>"That time when you shared your lunch with me even though we just met"</em></p>
                     </div>
                     
-                    <p>Little did we know that this chance meeting would blossom into such a beautiful friendship. You were wearing <strong>[what they were wearing]</strong> and we talked about <strong>[what you discussed]</strong>.</p>
+                    <p>You were wearing <strong>that blue top with white flowers</strong> and we talked about <strong>our favorite movies</strong>. Little did I know this would be the start of something beautiful.</p>
                 </div>
                 <div class="navigation">
                     <button disabled>Previous</button>
                     <button onclick="nextChapter()">Next Chapter</button>
                 </div>
-                <div class="page-counter">Page 1 of 5</div>
+                <div class="page-counter">Page 1 of 6</div>
             </div>
             
             <!-- Chapter 2 -->
             <div class="chapter" id="chapter2">
-                <h2>Chapter 2: Getting to Know Each Other</h2>
-                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends talking">
+                <h2>Chapter 2: Bonding Moments</h2>
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends bonding">
                 <div class="chapter-content">
-                    <p>As we spent more time together, I discovered that you're <strong>[quality you admire]</strong> and <strong>[another quality]</strong>. Our shared love for <strong>[common interest]</strong> brought us closer.</p>
+                    <p>Remember our <strong>late night study sessions</strong> that turned into <strong>gossip marathons</strong>? That's when I discovered your <strong>infectious laughter</strong> and <strong>kind heart</strong>.</p>
                     
                     <div class="memory-box">
-                        <p><em>"Remember when we [funny/meaningful memory from early friendship]"</em></p>
+                        <p><em>"That time we got caught laughing in the library and got shushed by the librarian"</em></p>
                     </div>
                     
-                    <p>One of my favorite early memories is when we <strong>[specific memory]</strong>. That's when I knew we'd be friends for a long time.</p>
+                    <p>Our shared love for <strong>street food</strong> and <strong>bad rom-coms</strong> brought us closer. You were always up for <strong>my crazy ideas</strong>!</p>
                 </div>
                 <div class="navigation">
                     <button onclick="prevChapter()">Previous</button>
                     <button onclick="nextChapter()">Next Chapter</button>
                 </div>
-                <div class="page-counter">Page 2 of 5</div>
+                <div class="page-counter">Page 2 of 6</div>
             </div>
             
             <!-- Chapter 3 -->
             <div class="chapter" id="chapter3">
-                <h2>Chapter 3: Becoming Best Friends</h2>
-                <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Close friends">
+                <h2>Chapter 3: Through Thick and Thin</h2>
+                <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Supporting each other">
                 <div class="chapter-content">
-                    <p>Over time, our bond grew stronger. We've been through <strong>[challenges you've faced together]</strong> and celebrated <strong>[happy moments]</strong> together.</p>
+                    <p>When I <strong>failed my exams</strong>, you were there with <strong>ice cream and encouragement</strong>. When you <strong>went through your breakup</strong>, we ate <strong>three pizzas in one night</strong>.</p>
                     
                     <div class="memory-box">
-                        <p><em>"That time we stayed up all night [specific memory of deep connection]"</em></p>
+                        <p><em>"Remember our 3am phone calls when we couldn't sleep?"</em></p>
                     </div>
                     
-                    <p>You've supported me when I needed it most, like when <strong>[specific example]</strong>. And I'll never forget how you <strong>[something kind they did]</strong>.</p>
+                    <p>You've seen me at my worst and still chose to stay. That means more than you'll ever know.</p>
                 </div>
                 <div class="navigation">
                     <button onclick="prevChapter()">Previous</button>
                     <button onclick="nextChapter()">Next Chapter</button>
                 </div>
-                <div class="page-counter">Page 3 of 5</div>
+                <div class="page-counter">Page 3 of 6</div>
             </div>
             
             <!-- Chapter 4 -->
             <div class="chapter" id="chapter4">
-                <h2>Chapter 4: Our Adventures</h2>
-                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends on adventure">
+                <h2>Chapter 4: Adventures Together</h2>
+                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Adventures">
                 <div class="chapter-content">
-                    <p>From <strong>[trip/activity you did together]</strong> to <strong>[another fun experience]</strong>, we've created so many amazing memories.</p>
+                    <p>From our <strong>impromptu road trip to Goa</strong> to <strong>getting lost in Delhi markets</strong>, we've collected memories like treasures.</p>
                     
                     <div class="memory-box">
-                        <p><em>"Who could forget when we [funny/adventurous memory]"</em></p>
+                        <p><em>"That time we danced in the rain like nobody was watching!"</em></p>
                     </div>
                     
-                    <p>Remember when we <strong>[specific funny story]</strong>? I still laugh every time I think about it! Or that time we <strong>[another memory]</strong> - that showed me how well we work together.</p>
+                    <p>Remember when we <strong>tried to cook pasta and set off the fire alarm</strong>? Or when we <strong>volunteered at that dog shelter</strong> and you fell in love with every puppy?</p>
                 </div>
                 <div class="navigation">
                     <button onclick="prevChapter()">Previous</button>
                     <button onclick="nextChapter()">Next Chapter</button>
                 </div>
-                <div class="page-counter">Page 4 of 5</div>
+                <div class="page-counter">Page 4 of 6</div>
             </div>
             
             <!-- Chapter 5 -->
             <div class="chapter" id="chapter5">
-                <h2>Chapter 5: Today and Beyond</h2>
-                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends with sunset">
+                <h2>Chapter 5: Our Unbreakable Bond</h2>
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Close friends">
                 <div class="chapter-content">
-                    <p>Today, I'm so grateful to have you in my life. You've taught me <strong>[lesson learned from them]</strong> and shown me <strong>[another positive impact they've had]</strong>.</p>
+                    <p>Through <strong>job changes</strong>, <strong>family dramas</strong>, and <strong>life's ups and downs</strong>, our friendship remained constant.</p>
                     
                     <div class="memory-box">
-                        <p><em>"What I appreciate most about you is [specific quality or thing they do]"</em></p>
+                        <p><em>"That secret handshake we made up that nobody else understands"</em></p>
                     </div>
                     
-                    <p>As we continue our journey, I look forward to <strong>[future plans/hopes]</strong> and all the new memories we'll create. No matter what happens, I know our friendship will remain strong because <strong>[reason your friendship lasts]</strong>.</p>
+                    <p>You're my <strong>person</strong> - the one I call for both <strong>celebrations</strong> and <strong>crises</strong>. No matter where life takes us, I know we'll always have each other's backs.</p>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevChapter()">Previous</button>
+                    <button onclick="nextChapter()">Next Chapter</button>
+                </div>
+                <div class="page-counter">Page 5 of 6</div>
+            </div>
+            
+            <!-- Chapter 6 (Marriage Chapter) -->
+            <div class="chapter" id="chapter6">
+                <h2>Chapter 6: To Our Future</h2>
+                <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Future together">
+                <div class="chapter-content">
+                    <p>As we look ahead, I imagine us <strong>being friends forever</strong>, watching each other grow and change.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"Someday we'll look back at these days and smile at how far we've come"</em></p>
+                    </div>
+                    
+                    <p>Maybe one day we'll be <strong>standing beside each other at our weddings</strong>, or <strong>taking our kids to the park together</strong>. Whatever the future holds, I know our friendship will be part of it.</p>
                 </div>
                 <div class="navigation">
                     <button onclick="prevChapter()">Previous</button>
                     <button disabled>Next</button>
                 </div>
-                <div class="page-counter">Page 5 of 5</div>
+                <div class="page-counter">Page 6 of 6</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Set your password here
-        const correctPassword = "bestfriends"; // Change this to your desired password
+        // Set your friend's birthday (month is 0-indexed, so 0=Jan, 11=Dec)
+        const birthday = new Date(new Date().getFullYear(), 7, 25); // August 25 (change this)
+        const friendName = "Priya"; // Change to your friend's name
+        const correctNickname = "dubuku"; // The nickname to guess
         
-        function checkPassword() {
-            const passwordInput = document.getElementById('passwordInput').value.toLowerCase();
-            const errorMessage = document.getElementById('errorMessage');
+        // Set up countdown
+        document.getElementById('friendName').textContent = friendName;
+        updateCountdown();
+        
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        
+        function updateCountdown() {
+            const now = new Date();
+            const birthdayThisYear = new Date(now.getFullYear(), birthday.getMonth(), birthday.getDate());
+            const birthdayNextYear = new Date(now.getFullYear() + 1, birthday.getMonth(), birthday.getDate());
             
-            if (passwordInput === correctPassword) {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('bookSection').style.display = 'block';
-            } else {
-                errorMessage.textContent = 'Incorrect password. Try again!';
+            let targetDate = birthdayThisYear;
+            if (now > birthdayThisYear) {
+                targetDate = birthdayNextYear;
+            }
+            
+            const diff = targetDate - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdown').innerHTML = `
+                ${days} days ${hours} hours<br>${minutes} minutes ${seconds} seconds
+            `;
+            
+            document.getElementById('birthdayDate').textContent = `Birthday: ${targetDate.toDateString()}`;
+            
+            // If it's birthday today, automatically move to next section
+            if (days === 0 && hours === 0 && minutes < 5) {
+                document.getElementById('countdown').innerHTML = "IT'S YOUR BIRTHDAY TODAY! 🎉";
+                setTimeout(() => nextSection(), 2000);
             }
         }
         
+        let currentSection = 1;
+        const totalSections = 4;
+        
+        function nextSection() {
+            if (currentSection < totalSections) {
+                document.querySelector(`.section.active`).classList.remove('active');
+                currentSection++;
+                document.getElementById(`${getSectionId(currentSection)}`).classList.add('active');
+                
+                // Create confetti when reaching message section
+                if (currentSection === 2) {
+                    createConfetti();
+                }
+            }
+        }
+        
+        function getSectionId(sectionNum) {
+            switch(sectionNum) {
+                case 1: return 'countdownSection';
+                case 2: return 'messageSection';
+                case 3: return 'gameSection';
+                case 4: return 'bookSection';
+            }
+        }
+        
+        // Nickname Game
+        function checkNickname() {
+            const guess = document.getElementById('nicknameInput').value.toLowerCase();
+            const errorElement = document.getElementById('gameErrorMessage');
+            
+            if (guess === correctNickname) {
+                errorElement.style.display = 'none';
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('afterGame').style.display = 'block';
+                createConfetti();
+            } else {
+                errorElement.textContent = 'Not quite! Try again. Hint: It starts with "du"';
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        // Memory Book Chapters
         let currentChapter = 1;
-        const totalChapters = 5;
+        const totalChapters = 6;
         
         function nextChapter() {
             if (currentChapter < totalChapters) {
@@ -319,10 +483,30 @@
             });
         }
         
-        // Allow pressing Enter to submit password
-        document.getElementById('passwordInput').addEventListener('keyup', function(event) {
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.top = '-10px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                document.body.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Allow pressing Enter to submit nickname
+        document.getElementById('nicknameInput').addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
-                checkPassword();
+                checkNickname();
             }
         });
     </script>
