@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Friendship Journey</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #4a6fa5;
+            margin-bottom: 30px;
+        }
+
+        .login-section, .book-section {
+            transition: all 0.5s ease;
+        }
+
+        .login-section {
+            padding: 20px;
+        }
+
+        .book-section {
+            display: none;
+            padding: 20px;
+        }
+
+        input[type="password"] {
+            width: 70%;
+            padding: 12px 20px;
+            margin: 15px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input[type="password"]:focus {
+            border-color: #4a6fa5;
+        }
+
+        button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #3a5a80;
+            transform: translateY(-2px);
+        }
+
+        .chapter {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        .chapter-content {
+            text-align: left;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .chapter-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .page-counter {
+            font-style: italic;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            height: 20px;
+            margin-top: 10px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .decoration {
+            position: absolute;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .decoration.top-left {
+            top: 20px;
+            left: 20px;
+            font-size: 50px;
+            transform: rotate(-15deg);
+        }
+
+        .decoration.bottom-right {
+            bottom: 20px;
+            right: 20px;
+            font-size: 50px;
+            transform: rotate(15deg);
+        }
+
+        .memory-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid #4a6fa5;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decoration top-left">📖</div>
+        <div class="decoration bottom-right">✨</div>
+
+        <!-- Login Section -->
+        <div class="login-section" id="loginSection">
+            <h1>Our Friendship Journey</h1>
+            <p>Enter the secret password to unlock our story</p>
+            <input type="password" id="passwordInput" placeholder="Our special word...">
+            <div class="error-message" id="errorMessage"></div>
+            <button onclick="checkPassword()">Unlock Memories</button>
+        </div>
+
+        <!-- Book Section -->
+        <div class="book-section" id="bookSection">
+            <h1>Our Friendship Journey</h1>
+            
+            <!-- Chapter 1 -->
+            <div class="chapter active" id="chapter1">
+                <h2>Chapter 1: The First Meeting</h2>
+                <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends meeting">
+                <div class="chapter-content">
+                    <p>It all began on <strong>[Date/Year]</strong> when we first met at <strong>[Location]</strong>. I remember thinking <strong>[Your first impression]</strong> when I saw you.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"That time when we [specific memory from first meeting]"</em></p>
+                    </div>
+                    
+                    <p>Little did we know that this chance meeting would blossom into such a beautiful friendship. You were wearing <strong>[what they were wearing]</strong> and we talked about <strong>[what you discussed]</strong>.</p>
+                </div>
+                <div class="navigation">
+                    <button disabled>Previous</button>
+                    <button onclick="nextChapter()">Next Chapter</button>
+                </div>
+                <div class="page-counter">Page 1 of 5</div>
+            </div>
+            
+            <!-- Chapter 2 -->
+            <div class="chapter" id="chapter2">
+                <h2>Chapter 2: Getting to Know Each Other</h2>
+                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends talking">
+                <div class="chapter-content">
+                    <p>As we spent more time together, I discovered that you're <strong>[quality you admire]</strong> and <strong>[another quality]</strong>. Our shared love for <strong>[common interest]</strong> brought us closer.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"Remember when we [funny/meaningful memory from early friendship]"</em></p>
+                    </div>
+                    
+                    <p>One of my favorite early memories is when we <strong>[specific memory]</strong>. That's when I knew we'd be friends for a long time.</p>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevChapter()">Previous</button>
+                    <button onclick="nextChapter()">Next Chapter</button>
+                </div>
+                <div class="page-counter">Page 2 of 5</div>
+            </div>
+            
+            <!-- Chapter 3 -->
+            <div class="chapter" id="chapter3">
+                <h2>Chapter 3: Becoming Best Friends</h2>
+                <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Close friends">
+                <div class="chapter-content">
+                    <p>Over time, our bond grew stronger. We've been through <strong>[challenges you've faced together]</strong> and celebrated <strong>[happy moments]</strong> together.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"That time we stayed up all night [specific memory of deep connection]"</em></p>
+                    </div>
+                    
+                    <p>You've supported me when I needed it most, like when <strong>[specific example]</strong>. And I'll never forget how you <strong>[something kind they did]</strong>.</p>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevChapter()">Previous</button>
+                    <button onclick="nextChapter()">Next Chapter</button>
+                </div>
+                <div class="page-counter">Page 3 of 5</div>
+            </div>
+            
+            <!-- Chapter 4 -->
+            <div class="chapter" id="chapter4">
+                <h2>Chapter 4: Our Adventures</h2>
+                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends on adventure">
+                <div class="chapter-content">
+                    <p>From <strong>[trip/activity you did together]</strong> to <strong>[another fun experience]</strong>, we've created so many amazing memories.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"Who could forget when we [funny/adventurous memory]"</em></p>
+                    </div>
+                    
+                    <p>Remember when we <strong>[specific funny story]</strong>? I still laugh every time I think about it! Or that time we <strong>[another memory]</strong> - that showed me how well we work together.</p>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevChapter()">Previous</button>
+                    <button onclick="nextChapter()">Next Chapter</button>
+                </div>
+                <div class="page-counter">Page 4 of 5</div>
+            </div>
+            
+            <!-- Chapter 5 -->
+            <div class="chapter" id="chapter5">
+                <h2>Chapter 5: Today and Beyond</h2>
+                <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" class="chapter-image" alt="Friends with sunset">
+                <div class="chapter-content">
+                    <p>Today, I'm so grateful to have you in my life. You've taught me <strong>[lesson learned from them]</strong> and shown me <strong>[another positive impact they've had]</strong>.</p>
+                    
+                    <div class="memory-box">
+                        <p><em>"What I appreciate most about you is [specific quality or thing they do]"</em></p>
+                    </div>
+                    
+                    <p>As we continue our journey, I look forward to <strong>[future plans/hopes]</strong> and all the new memories we'll create. No matter what happens, I know our friendship will remain strong because <strong>[reason your friendship lasts]</strong>.</p>
+                </div>
+                <div class="navigation">
+                    <button onclick="prevChapter()">Previous</button>
+                    <button disabled>Next</button>
+                </div>
+                <div class="page-counter">Page 5 of 5</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set your password here
+        const correctPassword = "bestfriends"; // Change this to your desired password
+        
+        function checkPassword() {
+            const passwordInput = document.getElementById('passwordInput').value.toLowerCase();
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (passwordInput === correctPassword) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('bookSection').style.display = 'block';
+            } else {
+                errorMessage.textContent = 'Incorrect password. Try again!';
+            }
+        }
+        
+        let currentChapter = 1;
+        const totalChapters = 5;
+        
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                document.getElementById(`chapter${currentChapter}`).classList.remove('active');
+                currentChapter++;
+                document.getElementById(`chapter${currentChapter}`).classList.add('active');
+                updatePageCounter();
+            }
+        }
+        
+        function prevChapter() {
+            if (currentChapter > 1) {
+                document.getElementById(`chapter${currentChapter}`).classList.remove('active');
+                currentChapter--;
+                document.getElementById(`chapter${currentChapter}`).classList.add('active');
+                updatePageCounter();
+            }
+        }
+        
+        function updatePageCounter() {
+            const counters = document.querySelectorAll('.page-counter');
+            counters.forEach(counter => {
+                counter.textContent = `Page ${currentChapter} of ${totalChapters}`;
+            });
+        }
+        
+        // Allow pressing Enter to submit password
+        document.getElementById('passwordInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+</html>
